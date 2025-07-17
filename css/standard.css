@@ -1,6 +1,6 @@
 @font-face {
-  font-family: "schrift";
-  src: url("../assets/fonts/schrift.ttf") format("truetype");
+  font-family: "righteous";
+  src: url("../assets/fonts/righteous.ttf") format("truetype");
 }
 
 * {
@@ -11,5 +11,5 @@ html,
 body {
   margin: 0;
   scroll-behavior: smooth;
-  font-family: "schrift", Arial, Helvetica, sans-serif;
+  font-family: "righteous", Arial, Helvetica, sans-serif;
 }

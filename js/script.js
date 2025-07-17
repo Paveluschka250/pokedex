@@ -34,7 +34,8 @@ async function loadFirst20Pokemon() {
 async function loadPokemonData(pokemonUrl) {
   const response = await fetch(pokemonUrl);
   const data = await response.json();
-
+  console.log(data);
+  
   const mainType = data.types[0].type.name;
   const cardColor = typeColors[mainType] || '#AAA';
 
@@ -56,11 +57,11 @@ function renderPokecard(pokemon) {
     <div class="pokemon-card" style="background-color: ${pokemon.color};">
       <h2>${pokemon.name} #${pokemon.number}</h2>
       <p>Typ: ${pokemon.type}</p>
-      <p>Gewicht: ${pokemon.weight}</p>
       <img src="${pokemon.pic}" alt="Bild von ${pokemon.name}">
-    </div>;
-
-  `   
+    </div>
+    
+  `
+    
 }
 
 loadFirst20Pokemon();
