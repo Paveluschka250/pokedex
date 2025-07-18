@@ -7,39 +7,90 @@ main {
 }
 
 main .pokemon-card {
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  padding: 16px;
-  text-align: center;
+  perspective: 1000px;
   width: 180px;
-  margin: 10px;
-  transition: transform 0.2s, background-color 0.3s;
-  color: white;
-  background-color: #aaa; 
+  height: 260px;
+}
+
+main .pokemon-card:hover .pokemon-card-inner {
+  transform: rotateY(180deg);
+}
+
+main .pokemon-card .pokemon-card-inner {
+  width: 100%;
+  height: 100%;
   position: relative;
-  overflow: hidden;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
 }
 
-main .pokemon-card:hover {
-  transform: translateY(-5px);
+main .pokemon-card .pokemon-card-inner .card-front {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding: 16px;
+  border-radius: 20px;
+  backface-visibility: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: black;
+  background-size: 100% 100%;
 }
 
-main .pokemon-card img {
+main .pokemon-card .pokemon-card-inner .card-front p {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  margin: 0;
+  opacity: 0.6;
+}
+
+main .pokemon-card .pokemon-card-inner .card-front h2 {
+  margin-top: 8px;
+  opacity: 0.8;
+}
+
+main .pokemon-card .pokemon-card-inner .card-front img {
   width: 100px;
   height: 100px;
   object-fit: contain;
+  margin-top: 12px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  transition: transform 0.3s;
+}
+
+main .pokemon-card:hover .pokemon-card-inner .card-front img {
+  transform: scale(1.1);
+}
+
+main .pokemon-card .pokemon-card-inner .card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding: 16px;
+  border-radius: 20px;
+  backface-visibility: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform: rotateY(180deg);
+  color: white;
+  text-align: left;
+}
+
+main .pokemon-card .pokemon-card-inner .card-back h3 {
   margin-bottom: 8px;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+  text-align: center;
 }
 
-main .pokemon-card h2 {
-  font-size: 1.2em;
-  margin: 0 0 8px;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); 
-}
-
-main .pokemon-card p {
+main .pokemon-card .pokemon-card-inner .card-back p {
   margin: 4px 0;
-  font-weight: 500;
-  font-size: 0.95em;
+  font-size: 0.85em;
+  line-height: 1.4;
 }
