@@ -1,0 +1,115 @@
+.d-none {
+  display: none !important;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.overlay-content {
+  background: white;
+  border-radius: 16px;
+  position: relative;
+  width: 90%;
+  height: 90%;
+  overflow-y: auto;
+  text-align: center;
+}
+
+.poke-overlay-header {
+  height: 180px;
+  background: var(--type-color, #f0f0f0);
+  color: white;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.overlay-content .poke-overlay-header .overlay-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 24px;
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.overlay-content .poke-overlay-header h2 {
+  text-align: center;
+}
+
+.overlay-content .poke-overlay-img {
+  position: relative;
+  top: -60px;
+  text-align: center;
+  z-index: 2;
+}
+
+.overlay-content .poke-overlay-img img {
+  width: 160px;
+  height: 160px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+}
+
+.overlay-content .poke-overlay-type {
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  width: fit-content;
+  margin: 0 auto 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  font-size: 16px;
+  text-align: center;
+  letter-spacing: 2px;
+}
+
+.overlay-content .poke-overlay-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+}
+
+.overlay-content .poke-overlay-stats .stat-block {
+  flex: 1;
+  padding: 0 8px;
+}
+
+.overlay-content .poke-overlay-stats .stat-block .stat-icon {
+  width: 24px;
+  height: 24px;
+  margin-bottom: 6px;
+  object-fit: contain;
+  opacity: 0.8;
+}
+
+.overlay-content .poke-overlay-stats .stat-block p {
+  margin: 0;
+  font-weight: bold;
+}
+
+.overlay-content .poke-overlay-stats .stat-block span {
+  font-size: 0.8em;
+  color: #777;
+}
+
+.overlay-content .poke-overlay-stats .divider {
+  width: 1px;
+  height: 50px;
+  background-color: #ccc;
+  opacity: 0.5;
+}

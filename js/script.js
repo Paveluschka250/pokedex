@@ -79,11 +79,48 @@ function renderPokecard(pokemon) {
 }
 
 function renderPokemonOverlay(encodedData) {
-  const decoded = decodeURIComponent(encodedData);
-  const pokemon = JSON.parse(decoded);
+  const pokemon = JSON.parse(decodeURIComponent(encodedData));
   openOverlay();
-  console.log(pokemon.name);
+  document.getElementById("overlay-content").innerHTML = createPokeOverlay(pokemon);
 }
+
+function createPokeOverlay(pokemon) {
+  return /*html*/ `
+      <div class="poke-overlay-header" style="--type-color: ${pokemon.color}">
+        <button class="overlay-close" onclick="closeOverlay()">←</button>
+        <h2>${capitalize(pokemon.name)} <span>#${String(pokemon.number).padStart(3, '0')}</span></h2>
+      </div>
+      <div class="poke-overlay-img">
+        <img src="${pokemon.pic}" alt="${pokemon.name}">
+      </div>
+      <div class="poke-overlay-type" style="background-color: ${pokemon.color}">
+        <strong>${capitalize(pokemon.type)}</strong>
+      </div>
+      <div class="poke-overlay-stats">
+        <div class="stat-block">
+          <img class="stat-icon" src="./assets/icons/weight.svg" alt="weight icon">
+          <p><strong>${pokemon.weight / 10} kg</strong></p>
+          <span>Weight</span>
+        </div>
+        <div class="divider"></div>
+        <div class="stat-block">
+          <img class="stat-icon" src="./assets/icons/height.svg" alt="height icon">
+          <p><strong>${pokemon.height / 10} m</strong></p>
+          <span>Height</span>
+        </div>
+        <div class="divider"></div>
+        <div class="stat-block">
+          <img class="stat-icon" src="./assets/icons/xp.svg" alt="ability icon">
+          <p><strong>${capitalize(pokemon.ability)}</strong></p>
+          <span>Ability</span>
+        </div>
+      </div>
+    
+  `;
+}
+
+
+
 
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
@@ -94,8 +131,6 @@ function openOverlay() {
 }
 
 function closeOverlay() {
-  console.log("schliessen");
-  
   document.getElementById("overlay").classList.add("d-none");
 }
 
