@@ -5,15 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./css/standard.css" />
     <link rel="stylesheet" href="./css/style.css" />
-    <link rel="icon" href="./assets/icons/favicon.ico">
+    <link rel="icon" href="./assets/icons/favicon.ico" />
     <title>Pokedex</title>
   </head>
   <body>
     <header></header>
-    <main id="pokemonList">
-    </main>
+    <main id="pokemonList"></main>
     <footer></footer>
+    <div class="overlay d-none" id="overlay" onclick="closeOverlay()">
+      <div class="overlay-content" onclick="event.stopPropagation()">
+        <button class="overlay-close" onclick="closeOverlay()">×</button>
+      </div>
+    </div>
+
+    <script src="./js/script.js"></script>
+    <script src="./js/templates.js"></script>
   </body>
-  <script src="./js/script.js"></script>
-  <script src="./js/templates.js"></script>
 </html>

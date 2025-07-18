@@ -20,7 +20,7 @@ const typeColors = {
 };
 
 async function loadFirst20Pokemon() {
-  const url = "https://pokeapi.co/api/v2/pokemon?limit=20";
+  const url = "https://pokeapi.co/api/v2/pokemon?limit=3";
   const response = await fetch(url);
   const data = await response.json();
 
@@ -56,8 +56,9 @@ function pokemonData(data) {
 }
 
 function renderPokecard(pokemon) {
+  const dataString = encodeURIComponent(JSON.stringify(pokemon));
   return /*html*/`
-    <div class="pokemon-card">
+    <div class="pokemon-card" onclick="renderPokemonOverlay('${dataString}')">
       <div class="pokemon-card-inner">
         <div class="card-front" style="background: linear-gradient(to bottom, #f0f0f0 50%, ${pokemon.color} 100%)">
           <p>#${pokemon.number}</p>
@@ -77,8 +78,25 @@ function renderPokecard(pokemon) {
   `;
 }
 
+function renderPokemonOverlay(encodedData) {
+  const decoded = decodeURIComponent(encodedData);
+  const pokemon = JSON.parse(decoded);
+  openOverlay();
+  console.log(pokemon.name);
+}
+
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+function openOverlay() {
+  document.getElementById("overlay").classList.remove("d-none");
+}
+
+function closeOverlay() {
+  console.log("schliessen");
+  
+  document.getElementById("overlay").classList.add("d-none");
 }
 
 loadFirst20Pokemon();
