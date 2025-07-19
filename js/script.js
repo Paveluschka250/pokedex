@@ -50,22 +50,32 @@ function pokemonData(data) {
     color: typeColors[mainType] || "#AAA",
     base_experience: data.base_experience,
     ability: data.abilities[0].ability.name,
+    hp: data.stats[0].base_stat,
+    attack: data.stats[1].base_stat,
+    defense: data.stats[2].base_stat,
+    special_attack: data.stats[3].base_stat,
+    special_defense: data.stats[4].base_stat,
+    speed: data.stats[5].base_stat,
   };
 
-  document.getElementById("pokemonList").innerHTML += renderPokecard(pokemon);
+  document.getElementById("pokemonList").innerHTML += creatPokecard(pokemon);
 }
 
-function renderPokecard(pokemon) {
+function creatPokecard(pokemon) {
   const dataString = encodeURIComponent(JSON.stringify(pokemon));
-  return /*html*/`
+  return /*html*/ `
     <div class="pokemon-card" onclick="renderPokemonOverlay('${dataString}')">
       <div class="pokemon-card-inner">
-        <div class="card-front" style="background: linear-gradient(to bottom, #f0f0f0 50%, ${pokemon.color} 100%)">
+        <div class="card-front" style="background: linear-gradient(to bottom, #f0f0f0 50%, ${
+          pokemon.color
+        } 100%)">
           <p>#${pokemon.number}</p>
           <h2>${capitalize(pokemon.name)}</h2>
           <img src="${pokemon.pic}" alt="Bild von ${pokemon.name}">
         </div>
-        <div class="card-back" style="background: linear-gradient(to bottom, ${pokemon.color}, #222)">
+        <div class="card-back" style="background: linear-gradient(to bottom, ${
+          pokemon.color
+        }, #222)">
           <h3>${capitalize(pokemon.name)}</h3>
           <p><strong>Type:</strong> ${capitalize(pokemon.type)}</p>
           <p><strong>Height:</strong> ${pokemon.height / 10} m</p>
@@ -81,14 +91,17 @@ function renderPokecard(pokemon) {
 function renderPokemonOverlay(encodedData) {
   const pokemon = JSON.parse(decodeURIComponent(encodedData));
   openOverlay();
-  document.getElementById("overlay-content").innerHTML = createPokeOverlay(pokemon);
+  document.getElementById("overlay-content").innerHTML =
+    createPokeOverlay(pokemon);
 }
 
 function createPokeOverlay(pokemon) {
   return /*html*/ `
       <div class="poke-overlay-header" style="--type-color: ${pokemon.color}">
         <button class="overlay-close" onclick="closeOverlay()">←</button>
-        <h2>${capitalize(pokemon.name)} <span>#${String(pokemon.number).padStart(3, '0')}</span></h2>
+        <h2>${capitalize(pokemon.name)} <span>#${String(
+    pokemon.number
+  ).padStart(3, "0")}</span></h2>
       </div>
       <div class="poke-overlay-img">
         <img src="${pokemon.pic}" alt="${pokemon.name}">
@@ -111,16 +124,35 @@ function createPokeOverlay(pokemon) {
         <div class="divider"></div>
         <div class="stat-block">
           <img class="stat-icon" src="./assets/icons/xp.svg" alt="ability icon">
-          <p><strong>${capitalize(pokemon.ability)}</strong></p>
-          <span>Ability</span>
+          <p><strong>${pokemon.base_experience}</strong></p>
+          <span>XP</span>
         </div>
       </div>
-    
+      <div class="poke-overlay-basestats">
+        <h3>Base Stats</h3>
+        ${renderBaseStat("HP", pokemon.hp, pokemon.color)}
+        ${renderBaseStat("Attack", pokemon.attack, pokemon.color)}
+        ${renderBaseStat("Defense", pokemon.defense, pokemon.color)}
+        ${renderBaseStat("Sp. Atk", pokemon.special_attack, pokemon.color)}
+        ${renderBaseStat("Sp. Def", pokemon.special_defense, pokemon.color)}
+        ${renderBaseStat("Speed", pokemon.speed, pokemon.color)}
+      </div>   
   `;
 }
 
-
-
+function renderBaseStat(label, value, color) {
+  return /*html*/ `
+    <div class="stat-row">
+      <span class="stat-label">${label}</span>
+      <span class="stat-value">${value}</span>
+      <div class="stat-bar">
+        <div class="stat-fill" style="width: ${
+          value / 2
+        }%; background-color: ${color}"></div>
+      </div>
+    </div>
+  `;
+}
 
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
