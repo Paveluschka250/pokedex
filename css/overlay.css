@@ -114,60 +114,101 @@
   opacity: 0.5;
 }
 
-.overlay-content .poke-overlay-basestats {
-  padding: 24px;
-  background: #fff;
-  border-radius: 0 0 20px 20px;
-  box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.03);
+
+.overlay-content .poke-slider {
+  position: relative;
+  width: 100%;
+  margin-top: 20px;
 }
 
-.overlay-content .poke-overlay-basestats h3 {
+.overlay-content .poke-slider .slider-nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.overlay-content .poke-slider .slider-nav button {
+  background-color: var(--type-color, #ccc);
+  border: none;
+  padding: 8px 16px;
+  color: white;
+  font-size: 1em;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.overlay-content .poke-slider .slider-nav .slider-title {
   text-align: center;
-  margin-bottom: 20px;
-  font-size: 1.1em;
-  font-weight: 700;
-  color: #222;
-  letter-spacing: 1px;
-  text-transform: uppercase;
+  font-size: 1.2em;
+  color: #333;
+  opacity: 0.8;
 }
 
-.overlay-content .poke-overlay-basestats .stat-row {
+.overlay-content .poke-slider .slider-pages {
+  position: relative;
+  overflow: hidden;
+  min-height: 100px;
+}
+
+.overlay-content .poke-slider .slider-pages .slider-page {
+  display: none;
+  animation: fade 0.3s ease-in-out;
+}
+
+.overlay-content .poke-slider .slider-pages .slider-page.active {
+  display: block;
+}
+
+@keyframes fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+#page-one .poke-overlay-basestats {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 10px;
+}
+
+
+#page-one .poke-overlay-basestats .stat-row {
   display: flex;
   align-items: center;
-  margin-bottom: 14px;
   gap: 10px;
 }
 
-.overlay-content .poke-overlay-basestats .stat-row .stat-label {
-  width: 90px;
-  font-weight: 600;
-  font-size: 0.85em;
-  color: #666;
+#page-one .poke-overlay-basestats .stat-row .stat-label {
+  width: 80px;
+  font-weight: bold;
+  font-size: 0.9em;
   text-align: right;
+  color: #444;
 }
-
-.overlay-content .poke-overlay-basestats .stat-row .stat-value {
-  width: 40px;
-  font-size: 0.85em;
+#page-one .poke-overlay-basestats .stat-row .stat-value {
+  width: 30px;
+  text-align: right;
   font-weight: 500;
-  text-align: right;
-  color: #333;
 }
 
-.overlay-content .poke-overlay-basestats .stat-row .stat-bar {
-  flex-grow: 1;
-  height: 12px;
-  background: linear-gradient(to right, #eee, #ddd);
-  border-radius: 10px;
+#page-one .poke-overlay-basestats .stat-row .stat-bar {
+  flex: 1;
+  height: 8px;
+  background: #eee;
+  border-radius: 4px;
   overflow: hidden;
-  position: relative;
-  box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.1);
 }
 
-.overlay-content .poke-overlay-basestats .stat-row .stat-bar .stat-fill {
+
+#page-one .poke-overlay-basestats .stat-row .stat-bar .stat-fill {
   height: 100%;
-  border-radius: 10px;
-  background: var(--type-color, #888);
-  box-shadow: 0 0 4px rgba(0,0,0,0.2);
-  transition: width 0.6s ease-in-out;
+  transition: width 0.3s ease;
+  border-radius: 4px;
 }
+
+
+
+
