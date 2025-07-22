@@ -1,6 +1,6 @@
 let currentPage = 0;
 const pageIds = ["page-one", "page-two", "page-three"];
-const pageTitles = ["Base Stats", "Zweiter Page", "Dritter Page"];
+const pageTitles = ["Base Stats", "Evolution", "Dritter Page"];
 const typeColors = {
   fire: "#F08030",
   water: "#6890F0",
@@ -35,11 +35,14 @@ async function loadFirst20Pokemon() {
 async function loadPokemonData(pokemonUrl) {
   const response = await fetch(pokemonUrl);
   const data = await response.json();
-  console.log(data);
-  pokemonData(data);
+  const speciesResponse = await fetch(data.species.url);
+  const speciesData = await speciesResponse.json();
+  const evolutionResponse = await fetch(speciesData.evolution_chain.url);
+  const evolutionData = await evolutionResponse.json();
+  pokemonData(data, evolutionData);
 }
 
-function pokemonData(data) {
+function pokemonData(data, evolutionData) {
   const mainType = data.types[0].type.name;
   const pokemon = {
     name: data.name,
@@ -57,15 +60,36 @@ function pokemonData(data) {
     special_attack: data.stats[3].base_stat,
     special_defense: data.stats[4].base_stat,
     speed: data.stats[5].base_stat,
+    evolution_chain: evolutionData.chain,
   };
-  document.getElementById("pokemonList").innerHTML += creatPokecard(pokemon);
+  document.getElementById("pokemonList").innerHTML += createPokecard(pokemon);
 }
 
-function renderPokemonOverlay(encodedData) {
-  const pokemon = JSON.parse(decodeURIComponent(encodedData));
+async function renderEvolutionChain(chain) {
+  const stages = [];
+  let current = chain;
+  while (current) {
+    const name = current.species.name;
+    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
+    const poke = await res.json();
+    const image = poke.sprites.other.dream_world.front_default;
+    stages.push({ name, image });
+    current = current.evolves_to?.[0];
+  }
+  return createEvolutionHTML(stages);
+}
+
+async function renderPokemonOverlay(encodedData) {
+  currentPage = 0;
+  const decoded = decodeURIComponent(encodedData);
+  const pokemon = JSON.parse(decoded);
   openOverlay();
   document.getElementById("overlay-content").innerHTML =
-    createPokeOverlay(pokemon);
+    createPokeOverlayHTML(pokemon);
+  const evoHtml = await renderEvolutionChain(pokemon.evolution_chain);
+  document.getElementById("page-two").innerHTML = `
+    ${evoHtml}
+  `;
 }
 
 function changePage(direction) {
