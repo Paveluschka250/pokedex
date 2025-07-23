@@ -10,21 +10,38 @@
     <title>Pokedex</title>
   </head>
   <body>
-    <header></header>
-    <main id="pokemonList"></main>
-    <div id="pagination" class="pagination"></div>
-
-    <footer></footer>
-    <div class="overlay d-none" id="overlay" onclick="closeOverlay()">
-      <div
-        class="overlay-content"
-        id="overlay-content"
-        onclick="event.stopPropagation()"
-      ></div>
+    <body>
+  <header>
+    <div class="header-content">
+      <img src="./assets/img/logo.png" alt="Pokedex Logo" class="logo" />
+      <h1>My Pokédex</h1>
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search Pokémon..."
+        oninput="searchPokemon()"
+      />
     </div>
+  </header>
 
-    <script src="./js/script.js"></script>
-    <script src="./js/pagination.js"></script>
-    <script src="./js/templates.js"></script>
-  </body>
+  <main id="pokemonList"></main>
+
+  <footer>
+    <div id="pagination" class="pagination"></div>
+    <div class="footer-links">
+      <a href="./pages/privacy-policy.html">Datenschutz</a>
+      <span>•</span>
+      <a href="./pages/impressum.html">Impressum</a>
+    </div>
+  </footer>
+
+  <div class="overlay d-none" id="overlay" onclick="closeOverlay()">
+    <div class="overlay-content" id="overlay-content" onclick="event.stopPropagation()"></div>
+  </div>
+
+  <script src="./js/script.js"></script>
+  <script src="./js/pagination.js"></script>
+  <script src="./js/templates.js"></script>
+</body>
+
 </html>
