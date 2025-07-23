@@ -22,14 +22,25 @@ const typeColors = {
   flying: "#A890F0",
 };
 
-async function loadFirst20Pokemon() {
-  const url = "https://pokeapi.co/api/v2/pokemon?limit=20";
+async function loadPokemonRange(offset, limit = 40) {
+  const url = `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`;
   const response = await fetch(url);
   const data = await response.json();
+  document.getElementById("pokemonList").innerHTML = "";
   const allPokemon = data.results;
+
   for (let pokemon of allPokemon) {
     await loadPokemonData(pokemon.url);
   }
+}
+
+
+async function initPagination() {
+  const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=1");
+  const data = await res.json();
+  const total = data.count;
+  const totalPages = Math.ceil(total / 40);
+  setupPagination(totalPages);
 }
 
 async function loadPokemonData(pokemonUrl) {
@@ -111,4 +122,5 @@ function closeOverlay() {
   document.getElementById("overlay").classList.add("d-none");
 }
 
-loadFirst20Pokemon();
+initPagination();
+loadPokemonRange(0);

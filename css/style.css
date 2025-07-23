@@ -95,3 +95,33 @@ main .pokemon-card .pokemon-card-inner .card-back p {
   font-size: 0.85em;
   line-height: 1.4;
 }
+
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin: 24px 0;
+}
+
+.pagination button {
+  padding: 6px 10px;
+  border: none;
+  background: #eee;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.pagination button:hover {
+  background-color: #ccc;
+}
+
+#pagination button.active-page {
+  background-color: #333;
+  color: white;
+  font-weight: bold;
+  border-radius: 6px;
+  transform: scale(1.05);
+}
