@@ -37,6 +37,7 @@ header .header-content input {
 }
 
 main {
+  flex: 1;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;

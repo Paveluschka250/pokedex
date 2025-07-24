@@ -9,7 +9,10 @@
 
 html,
 body {
+  height: 100%;
   margin: 0;
   scroll-behavior: smooth;
   font-family: "righteous", Arial, Helvetica, sans-serif;
+  display: flex;
+  flex-direction: column;
 }
