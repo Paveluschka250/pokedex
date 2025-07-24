@@ -15,4 +15,5 @@ body {
   font-family: "righteous", Arial, Helvetica, sans-serif;
   display: flex;
   flex-direction: column;
+  background: #da3429;
 }
