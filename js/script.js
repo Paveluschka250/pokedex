@@ -23,16 +23,32 @@ const typeColors = {
 };
 
 async function loadPokemonRange(offset, limit = 40) {
+  showSpinner();
+
   const url = `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`;
   const response = await fetch(url);
   const data = await response.json();
+
   document.getElementById("pokemonList").innerHTML = "";
+
   const allPokemon = data.results;
 
   for (let pokemon of allPokemon) {
     await loadPokemonData(pokemon.url);
   }
+
+  hideSpinner();
 }
+
+
+function showSpinner() {
+  document.getElementById("loading-spinner").style.display = "flex";
+}
+
+function hideSpinner() {
+  document.getElementById("loading-spinner").style.display = "none";
+}
+
 
 
 async function initPagination() {
