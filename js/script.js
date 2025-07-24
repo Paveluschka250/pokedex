@@ -138,5 +138,30 @@ function closeOverlay() {
   document.getElementById("overlay").classList.add("d-none");
 }
 
+function setupSearch() {
+  const input = document.getElementById("search-input");
+  input.addEventListener("input", async () => {
+    const query = input.value.trim().toLowerCase();
+
+    if (query.length < 3) {
+      loadPokemonRange(0);
+      return;
+    }
+
+    const url = "https://pokeapi.co/api/v2/pokemon?limit=1302";
+    const response = await fetch(url);
+    const data = await response.json();
+    const filtered = data.results.filter(p => p.name.startsWith(query));
+
+    document.getElementById("pokemonList").innerHTML = "";
+    for (let p of filtered) {
+      await loadPokemonData(p.url);
+    }
+  });
+}
+
+
+
 initPagination();
 loadPokemonRange(0);
+setupSearch();
