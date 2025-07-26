@@ -37,14 +37,37 @@
 }
 
 .overlay-content .poke-overlay-header .overlay-close {
-  position: absolute;
-  top: 12px;
-  right: 16px;
-  font-size: 24px;
-  background: transparent;
-  border: none;
-  color: white;
+  position: fixed;
+  top: 7%;
+  right: 7%;
+  width: 48px;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
   cursor: pointer;
+  z-index: 9999;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.overlay-content .poke-overlay-header .overlay-close:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.1) rotate(10deg);
+}
+
+.overlay-content .poke-overlay-header .overlay-close img {
+  width: 24px;
+  height: 24px;
+  transition: transform 0.2s ease;
+}
+
+.overlay-content .poke-overlay-header .overlay-close:hover img {
+  transform: rotate(90deg);
 }
 
 .overlay-content .poke-overlay-header h2 {
@@ -52,10 +75,15 @@
 }
 
 .overlay-content .poke-overlay-img {
-  position: relative;
+  display: flex;
+  justify-content: space-around; /* verteile Buttons & Bild */
+  align-items: center;
   top: -60px;
   text-align: center;
   z-index: 2;
+  position: relative;
+  padding: 0 12px;
+  gap: 12px;
 }
 
 .overlay-content .poke-overlay-img img {
@@ -63,6 +91,36 @@
   height: 160px;
   object-fit: contain;
   filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+}
+
+.overlay-content .poke-overlay-img .nav-btn {
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: #2c2c2c;
+  font-size: 1.2rem;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay-content .poke-overlay-img .nav-btn:hover {
+  transform: scale(1.15);
+  background: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+  color: #000;
+}
+
+.overlay-content .poke-overlay-img .nav-btn img {
+  width: 24px;
+  height: 24px;
 }
 
 .overlay-content .poke-overlay-type {
@@ -114,7 +172,6 @@
   opacity: 0.5;
 }
 
-
 .overlay-content .poke-slider {
   position: relative;
   width: 100%;
@@ -130,14 +187,24 @@
 }
 
 .overlay-content .poke-slider .slider-nav button {
-  background-color: var(--type-color, #ccc);
   border: none;
-  padding: 8px 16px;
-  color: white;
-  font-size: 1em;
-  border-radius: 8px;
+  padding: 10px;
+  border-radius: 999px; 
+  background-color: var(--type-color);
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.overlay-content .poke-slider .slider-nav button:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+  background-color: color-mix(in srgb, var(--type-color) 80%, #ffffff);
+}
+
+.overlay-content .poke-slider .slider-nav button img {
+  width: 20px;
+  vertical-align: middle;
 }
 
 .overlay-content .poke-slider .slider-nav .slider-title {
@@ -163,8 +230,12 @@
 }
 
 @keyframes fade {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 #page-one .poke-overlay-basestats {
@@ -173,7 +244,6 @@
   gap: 10px;
   padding: 0 10px;
 }
-
 
 #page-one .poke-overlay-basestats .stat-row {
   display: flex;
@@ -201,7 +271,6 @@
   border-radius: 4px;
   overflow: hidden;
 }
-
 
 #page-one .poke-overlay-basestats .stat-row .stat-bar .stat-fill {
   height: 100%;
@@ -250,4 +319,34 @@
   font-weight: bold;
   color: #999;
   user-select: none;
+}
+
+#overlay-content.slide-in {
+  animation: slideIn 0.3s ease-in-out;
+}
+
+#overlay-content.slide-out {
+  animation: slideOut 0.3s ease-in-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
 }

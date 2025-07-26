@@ -1,4 +1,6 @@
 let currentPage = 0;
+let loadedPokemon = [];
+let currentPokemonIndex = 0;
 const pageIds = ["page-one", "page-two", "page-three"];
 const pageTitles = ["Base Stats", "Evolution", "Dritter Page"];
 const typeColors = {
@@ -22,34 +24,9 @@ const typeColors = {
   flying: "#A890F0",
 };
 
-async function loadPokemonRange(offset, limit = 40) {
-  showSpinner();
-
-  const url = `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`;
-  const response = await fetch(url);
-  const data = await response.json();
-
-  document.getElementById("pokemonList").innerHTML = "";
-
-  const allPokemon = data.results;
-
-  for (let pokemon of allPokemon) {
-    await loadPokemonData(pokemon.url);
-  }
-
-  hideSpinner();
-}
-
-
-function showSpinner() {
-  document.getElementById("loading-spinner").style.display = "flex";
-}
-
-function hideSpinner() {
-  document.getElementById("loading-spinner").style.display = "none";
-}
-
-
+initPagination();
+loadPokemonRange(0);
+setupSearch();
 
 async function initPagination() {
   const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=1");
@@ -57,6 +34,18 @@ async function initPagination() {
   const total = data.count;
   const totalPages = Math.ceil(total / 40);
   setupPagination(totalPages);
+}
+
+async function loadPokemonRange(offset, limit = 40) {
+  showSpinner();
+  const url = `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`;
+  const response = await fetch(url);
+  const data = await response.json();
+  document.getElementById("pokemonList").innerHTML = "";
+  for (let pokemon of data.results) {
+    await loadPokemonData(pokemon.url);
+  }
+  hideSpinner();
 }
 
 async function loadPokemonData(pokemonUrl) {
@@ -89,7 +78,88 @@ function pokemonData(data, evolutionData) {
     speed: data.stats[5].base_stat,
     evolution_chain: evolutionData.chain,
   };
+  loadedPokemon.push(pokemon);
   document.getElementById("pokemonList").innerHTML += createPokecard(pokemon);
+}
+
+async function renderPokemonOverlay(encodedData) {
+  const decoded = decodeURIComponent(encodedData);
+  const pokemon = JSON.parse(decoded);
+  currentPokemonIndex = loadedPokemon.findIndex(p => p.name === pokemon.name);
+  await showPokemonOverlay(pokemon);
+}
+
+async function showPokemonOverlay(pokemon) {
+  openOverlay();
+  currentPage = 0;
+  const container = document.getElementById("overlay-content");
+  container.innerHTML = createPokeOverlayHTML(pokemon);
+  const evoHtml = await renderEvolutionChain(pokemon.evolution_chain);
+  document.getElementById("page-two").innerHTML = evoHtml;
+}
+
+async function navigateOverlay(direction) {
+  const nextIndex = currentPokemonIndex + direction;
+  if (nextIndex < 0 || nextIndex >= loadedPokemon.length) return;
+
+  const container = document.getElementById("overlay-content");
+  container.classList.add("slide-out");
+  setTimeout(async () => {
+    currentPokemonIndex = nextIndex;
+    const nextPokemon = loadedPokemon[currentPokemonIndex];
+    container.classList.remove("slide-out");
+    container.classList.add("slide-in");
+    container.innerHTML = createPokeOverlayHTML(nextPokemon);
+    const evoHtml = await renderEvolutionChain(nextPokemon.evolution_chain);
+    document.getElementById("page-two").innerHTML = evoHtml;
+    setTimeout(() => container.classList.remove("slide-in"), 300);
+  }, 300);
+}
+
+function changePage(direction) {
+  document.getElementById(pageIds[currentPage]).classList.remove("active");
+  currentPage = (currentPage + direction + pageIds.length) % pageIds.length;
+  document.getElementById(pageIds[currentPage]).classList.add("active");
+  document.getElementById("slider-title").textContent = pageTitles[currentPage];
+}
+
+function openOverlay() {
+  document.getElementById("overlay").classList.remove("d-none");
+}
+
+function closeOverlay() {
+  document.getElementById("overlay").classList.add("d-none");
+}
+
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+function showSpinner() {
+  document.getElementById("loading-spinner").style.display = "flex";
+}
+
+function hideSpinner() {
+  document.getElementById("loading-spinner").style.display = "none";
+}
+
+function setupSearch() {
+  const input = document.getElementById("search-input");
+  input.addEventListener("input", async () => {
+    const query = input.value.trim().toLowerCase();
+    if (query.length < 3) {
+      loadPokemonRange(0);
+      return;
+    }
+    const url = "https://pokeapi.co/api/v2/pokemon?limit=1302";
+    const response = await fetch(url);
+    const data = await response.json();
+    const filtered = data.results.filter(p => p.name.startsWith(query));
+    document.getElementById("pokemonList").innerHTML = "";
+    for (let p of filtered) {
+      await loadPokemonData(p.url);
+    }
+  });
 }
 
 async function renderEvolutionChain(chain) {
@@ -105,63 +175,3 @@ async function renderEvolutionChain(chain) {
   }
   return createEvolutionHTML(stages);
 }
-
-async function renderPokemonOverlay(encodedData) {
-  currentPage = 0;
-  const decoded = decodeURIComponent(encodedData);
-  const pokemon = JSON.parse(decoded);
-  openOverlay();
-  document.getElementById("overlay-content").innerHTML =
-    createPokeOverlayHTML(pokemon);
-  const evoHtml = await renderEvolutionChain(pokemon.evolution_chain);
-  document.getElementById("page-two").innerHTML = `
-    ${evoHtml}
-  `;
-}
-
-function changePage(direction) {
-  document.getElementById(pageIds[currentPage]).classList.remove("active");
-  currentPage = (currentPage + direction + pageIds.length) % pageIds.length;
-  document.getElementById(pageIds[currentPage]).classList.add("active");
-  document.getElementById("slider-title").textContent = pageTitles[currentPage];
-}
-
-function capitalize(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-function openOverlay() {
-  document.getElementById("overlay").classList.remove("d-none");
-}
-
-function closeOverlay() {
-  document.getElementById("overlay").classList.add("d-none");
-}
-
-function setupSearch() {
-  const input = document.getElementById("search-input");
-  input.addEventListener("input", async () => {
-    const query = input.value.trim().toLowerCase();
-
-    if (query.length < 3) {
-      loadPokemonRange(0);
-      return;
-    }
-
-    const url = "https://pokeapi.co/api/v2/pokemon?limit=1302";
-    const response = await fetch(url);
-    const data = await response.json();
-    const filtered = data.results.filter(p => p.name.startsWith(query));
-
-    document.getElementById("pokemonList").innerHTML = "";
-    for (let p of filtered) {
-      await loadPokemonData(p.url);
-    }
-  });
-}
-
-
-
-initPagination();
-loadPokemonRange(0);
-setupSearch();

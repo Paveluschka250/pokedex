@@ -10,7 +10,6 @@ function renderPaginationButtons(direction = null) {
   const container = document.getElementById("pagination");
   container.innerHTML = "";
 
-  // Wende die Animation an
   if (direction === "left") {
     container.classList.remove("slide-right");
     container.classList.add("slide-left");
@@ -24,14 +23,13 @@ function renderPaginationButtons(direction = null) {
   renderNextButton(container);
 }
 
-
 function renderPrevButton(container) {
   if (currentPageGroup === 0) return;
   const btn = document.createElement("button");
   btn.textContent = "←";
   btn.onclick = () => {
     currentPageGroup -= visibleButtons;
-    renderPaginationButtons();
+    renderPaginationButtons("left");
   };
   container.appendChild(btn);
 }
@@ -42,7 +40,7 @@ function renderNextButton(container) {
   btn.textContent = "→";
   btn.onclick = () => {
     currentPageGroup += visibleButtons;
-    renderPaginationButtons();
+    renderPaginationButtons("right");
   };
   container.appendChild(btn);
 }
@@ -74,4 +72,3 @@ function highlightActiveButton(i) {
   const btn = document.getElementById(`page-btn-${i}`);
   if (btn) btn.classList.add("active-page");
 }
-

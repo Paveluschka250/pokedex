@@ -28,11 +28,19 @@ function createPokecard(pokemon) {
 function createPokeOverlayHTML(pokemon) {
   return /*html*/`
     <div class="poke-overlay-header" style="--type-color: ${pokemon.color}">
-      <button class="overlay-close" onclick="closeOverlay()">←</button>
+      <button class="overlay-close" onclick="closeOverlay()">
+        <img src="./assets/icons/close.svg" alt="close">
+      </button>
       <h2>${capitalize(pokemon.name)} <span>#${String(pokemon.number).padStart(3, "0")}</span></h2>
     </div>
     <div class="poke-overlay-img">
+      <button class="nav-btn prev" onclick="navigateOverlay(-1)">
+        <img src="./assets/icons/left2.svg" alt="left">
+      </button> 
       <img src="${pokemon.pic}" alt="${pokemon.name}">
+      <button class="nav-btn next" onclick="navigateOverlay(1)">
+        <img src="./assets/icons/right2.svg" alt="right">
+      </button>
     </div>
     <div class="poke-overlay-type" style="background-color: ${pokemon.color}">
       <strong>${capitalize(pokemon.type)}</strong>
@@ -56,11 +64,15 @@ function createPokeOverlayHTML(pokemon) {
         <span>XP</span>
       </div>
     </div>
-    <div class="poke-slider">
+    <div class="poke-slider" style="--type-color: ${pokemon.color}">
       <div class="slider-nav">
-        <button onclick="changePage(-1)">←</button>
+        <button onclick="changePage(-1)">
+          <img src="./assets/icons/left.svg" alt="left">
+        </button>
         <h3 id="slider-title" class="slider-title">Base Stats</h3>
-        <button onclick="changePage(1)">→</button>
+        <button onclick="changePage(1)">
+          <img src="./assets/icons/right.svg" alt="right">
+        </button>
       </div>
       <div class="slider-pages">
         <div class="slider-page active" id="page-one">
